@@ -1,0 +1,68 @@
+import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
+
+public class ConvexPolygonArea {
+
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+
+        int cases = in.nextInt();
+        in.nextLine();
+
+        //Creating variables before the loop is necessary because they change each time a new line of input is created
+        int count = 0;
+        String[] nums;
+        int[] xValues;
+        int xCount;
+        int[] yValues;
+        int yCount;
+
+        int shoelaceOne;
+        int shoelaceTwo;
+
+        while(count < cases){
+            nums = in.nextLine().split(" ");//split() is an incredibly useful method for taking in lines of input where the data is separated with something like a space
+
+            //Re-setting values for each iteration
+            xValues = new int[parseInt(nums[0]) + 1];
+            xCount = 0;
+            yValues = new int[parseInt(nums[0]) + 1];
+            yCount = 0;
+
+            shoelaceOne = 0;
+            shoelaceTwo = 0;
+
+            //Splitting the input array into separate arrays, one for x values and one for y
+            //Starting input at 1 because the first index is the amount of coordinates in the line
+            for(int i = 1; i < nums.length; i++){
+                if(i % 2 != 0){//Odd valued indexes are the place of xValues
+                    xValues[xCount] = parseInt(nums[i]);
+                    xCount++;
+                }
+                else if(i % 2 == 0){//Even valued indexes are the place of yValues
+                    yValues[yCount] = parseInt(nums[i]);
+                    yCount++;
+                }
+            }
+
+            xValues[xValues.length - 1] = xValues[0];
+            yValues[yValues.length - 1] = yValues[0];
+
+            //Additive side
+            for(int i = 0; i < xValues.length - 1; i++)
+                shoelaceOne += xValues[i] * yValues[i + 1];
+
+            //Subtractive side
+            for(int i = 0; i < yValues.length - 1; i++)
+                shoelaceTwo += yValues[i] * xValues[i + 1];
+
+            System.out.println((shoelaceOne - shoelaceTwo) / 2.0);
+
+            count++;
+        }
+
+    }
+
+}
