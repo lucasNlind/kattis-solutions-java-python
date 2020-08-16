@@ -1,0 +1,42 @@
+import java.util.Scanner;
+
+public class Egypt {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+
+        int x = in.nextInt();
+        int y = in.nextInt();
+        int z = in.nextInt();
+        
+        //Determine what the largest side is and simply use Pythagorean Thoerem to check if the other sides will make a right triangle
+
+        while(!(x == 0 && y == 0 && z == 0)){//will continue to loop so long as not all values equal zero
+
+            if(x == y && x == z){//If all are equal length, not a right triangle
+                System.out.println("wrong");
+            }
+            else if(x > y && x > z){//x is the largest side
+                if(Math.pow(x, 2) == Math.pow(y, 2) + Math.pow(z, 2))
+                    System.out.println("right");
+                else
+                    System.out.println("wrong");
+            }
+            else if(y > x && y > z){//y is the largest side
+                if(Math.pow(y, 2) == Math.pow(x, 2) + Math.pow(z, 2))
+                    System.out.println("right");
+                else
+                    System.out.println("wrong");
+            }
+            else{//z is the largest side
+                if(Math.pow(z, 2) == Math.pow(x, 2) + Math.pow(y, 2))
+                    System.out.println("right");
+                else
+                    System.out.println("wrong");
+            }
+
+            x = in.nextInt();
+            y = in.nextInt();
+            z = in.nextInt();
+        }
+    }
+}
