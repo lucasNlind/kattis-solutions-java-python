@@ -1,0 +1,24 @@
+import java.util.Scanner;
+
+public class Sibice {
+    public static void main(String[] args) {
+        //Quite a simple problem - the longest length that a single match can have in order to fit into the box is the length from one corner to the opposite corner
+        //Using the Pythagorean Theorem, I simply stored the values of the width and length of the box in variables and calculated the diagonal length.
+    
+        Scanner input = new Scanner(System.in);
+
+        int n = input.nextInt();
+        int w = input.nextInt();
+        int h = input.nextInt();
+
+        int current;
+
+        for(int i = 0; i < n; i++){
+            current = input.nextInt();
+            if(Math.sqrt(Math.pow(w * 1.0, 2) + Math.pow(h * 1.0, 2)) >= current)
+                System.out.println("DA");
+            else
+                System.out.println("NE");
+        }
+    }
+}
