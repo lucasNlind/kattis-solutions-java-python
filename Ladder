@@ -1,0 +1,9 @@
+import java.util.Scanner;
+
+public class Ladder {
+    public static void main(String[] args) {
+        //Super simple problem if you know the basics of the Java Math API
+        Scanner input = new Scanner(System.in);
+        System.out.println((int) Math.ceil(input.nextInt() / Math.sin((input.nextInt() * Math.PI) / 180)));
+    }
+}
