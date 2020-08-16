@@ -1,0 +1,157 @@
+
+import java.util.Scanner;
+import static java.lang.Integer.parseInt;
+
+public class Chess {
+    public static void main(String[] args) {
+        //Create a 2D array of Strings, with each block labeled black or white
+        //pos1 is the starting position of the chessPiece and pos2 is the final destination
+
+        //checkStraight() will be either a method or a logic branch used to determine if the piece can me moved
+        //between two positions in a single vector 'n' number of times
+
+        //pos2 will always have with it four positions, each one extending diagonally to the surround squares
+        //checkStraight() will be used to determine if pos1 can reach any of these four positions. If not, they will
+        //continue to move outward by one space until pos1 finds a straight shot to one of them. When and if this happens,
+        //pos1 will move to one of the four corners and then subsequently move to pos2 because there will already be a straight
+        //path ready for it to take.
+
+        Scanner input = new Scanner(System.in);
+
+        int cases = input.nextInt();
+        input.nextLine();
+
+        //Creating a board with white and black values in each square
+        String[][] board = {{"w", "b", "w", "b", "w", "b", "w", "b"},
+                            {"b", "w", "b", "w", "b", "w", "b", "w"},
+                            {"w", "b", "w", "b", "w", "b", "w", "b"},
+                            {"b", "w", "b", "w", "b", "w", "b", "w"},
+                            {"w", "b", "w", "b", "w", "b", "w", "b"},
+                            {"b", "w", "b", "w", "b", "w", "b", "w"},
+                            {"w", "b", "w", "b", "w", "b", "w", "b"},
+                            {"b", "w", "b", "w", "b", "w", "b", "w"}};
+
+        String[] list;
+        int count = 0;
+
+        while(count < cases){
+
+            list = input.nextLine().split(" ");//Splitting the elements in eaech line
+            String letterOne = list[0];
+            int startX = -1;
+            int startY = parseInt(list[1]);//parseInt() converts String value to an Integer
+            String letterTwo = list[2];
+            int endX = -1;
+            int endY = parseInt(list[3]);//parseInt() converts String value to an Integer
+
+            String[] convert = {"A", "B", "C", "D", "E", "F", "G", "H"};
+            //Using an array of letters to manually convert letters in input to usable int values
+            for(int i = 0; i < convert.length; i++){
+                if(letterOne.equals(convert[i]))
+                    startX = i + 1;
+                if(letterTwo.equals(convert[i]))
+                    endX = i + 1;
+            }
+
+
+            //The squares are the same color and we can begin testing
+            if(board[startX - 1][startY - 1].equals(board[endX - 1][endY - 1])){
+
+                //First test case: same square being compared
+                if(startX == endX && startY == endY){
+                    System.out.println(0 + " " + letterOne + " " + startY);
+                }
+
+                //Second test case: if the absolute value of the differences of BOTH coordinates are the same, return both coordinates
+                else if(Math.abs(startX - endX) == Math.abs(startY - endY)){
+                    System.out.println(1 + " " + letterOne + " " + startY + " " + letterTwo + " " + endY);
+                }
+
+                //Third test case: multiple moves are required
+                //Find four corners, starting with upper left and moving clockwise
+                //Be sure to check that the value does not fall outside the board (if (x > 8 || x < 1) && (y > 8 || y < 1))
+                //DONT FORGET you are working with values 1-8 for both X and Y ****
+                else{
+
+                    //Creating the four corners
+                    int cornerOneX = endX - 1;
+                    int cornerOneY = endY + 1;
+                    if((cornerOneX > 8 || cornerOneX < 1) || (cornerOneY > 8 || cornerOneY < 1))
+                        cornerOneX = 101;
+
+                    int cornerTwoX = endX + 1;
+                    int cornerTwoY = endY + 1;
+                    if((cornerTwoX > 8 || cornerTwoX < 1) || (cornerTwoY > 8 || cornerTwoY < 1))
+                        cornerTwoX = 101;
+
+                    int cornerThreeX = endX + 1;
+                    int cornerThreeY = endY - 1;
+                    if((cornerThreeX > 8 || cornerThreeX < 1) || (cornerThreeY > 8 || cornerThreeY < 1))
+                        cornerThreeX = 101;
+
+                    int cornerFourX = endX - 1;
+                    int cornerFourY = endY - 1;
+                    if((cornerFourX > 8 || cornerFourX < 1) || (cornerFourY > 8 || cornerFourY < 1))
+                        cornerFourX = 101;
+
+                    //as long as none of the corners's abs value differences equal start X and Y values, expand the square
+                    while(!(Math.abs(startX - cornerOneX) == Math.abs(startY - cornerOneY) ||
+                            Math.abs(startX - cornerTwoX) == Math.abs(startY - cornerTwoY) ||
+                            Math.abs(startX - cornerThreeX) == Math.abs(startY - cornerThreeY) ||
+                            Math.abs(startX - cornerFourX) == Math.abs(startY - cornerFourY))
+                    ){
+
+                        cornerOneX -= 1;//Top left corner
+                        cornerOneY += 1;
+                        if((cornerOneX > 8 || cornerOneX < 1) || (cornerOneY > 8 || cornerOneY < 1))
+                            cornerOneX = 101;
+
+                        cornerTwoX += 1;//Top right corner
+                        cornerTwoY += 1;
+                        if((cornerTwoX > 8 || cornerTwoX < 1) || (cornerTwoY > 8 || cornerTwoY < 1))
+                            cornerTwoX = 101;
+
+                        cornerThreeX += 1;//Bottom right corner
+                        cornerThreeY -= 1;
+                        if((cornerThreeX > 8 || cornerThreeX < 1) || (cornerThreeY > 8 || cornerThreeY < 1))
+                            cornerThreeX = 101;
+
+                        cornerFourX -= 1;//Bottom left corner
+                        cornerFourY -= 1;
+                        if((cornerFourX > 8 || cornerFourX < 1) || (cornerFourY > 8 || cornerFourY < 1))
+                            cornerFourX = 101;
+                    }
+
+                    //Determine which corner is 'the one'
+                    //You have to convert letters, make an array with corresponding letters
+                    String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H"};
+
+                    if(Math.abs(startX - cornerOneX) == Math.abs(startY - cornerOneY)){//Corner 1
+                        System.out.println(2 + " " + letterOne + " " + startY + " " + letters[cornerOneX - 1] + " " + cornerOneY
+                                + " " + letterTwo + " " + endY);
+                    }
+                    else if(Math.abs(startX - cornerTwoX) == Math.abs(startY - cornerTwoY)){//Corner 2
+                        System.out.println(2 + " " + letterOne + " " + startY + " " + letters[cornerTwoX - 1] + " " + cornerTwoY
+                                + " " + letterTwo + " " + endY);
+                    }
+                    else if(Math.abs(startX - cornerThreeX) == Math.abs(startY - cornerThreeY)){//Corner 3
+                        System.out.println(2 + " " + letterOne + " " + startY + " " + letters[cornerThreeX - 1] + " " + cornerThreeY
+                                + " " + letterTwo + " " + endY);
+                    }
+                    else if(Math.abs(startX - cornerFourX) == Math.abs(startY - cornerFourY)){//Corner 4
+                        System.out.println(2 + " " + letterOne + " " + startY + " " + letters[cornerFourX - 1] + " " + cornerFourY
+                                + " " + letterTwo + " " + endY);
+                    }
+                }
+            }
+            //The squares are different colors and therefore the bishop cannot reach the other, impossible
+            else {
+                System.out.println("Impossible");
+            }
+
+            count++;
+        }
+
+
+    }
+}
